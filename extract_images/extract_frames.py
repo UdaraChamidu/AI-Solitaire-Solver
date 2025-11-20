@@ -3,24 +3,20 @@ import os
 
 # --- Configuration ---
 # You need to replace this with the path to your downloaded Solitaire video file
-VIDEO_PATH = "solitaire_gameplay.mp4" 
+VIDEO_PATH = "./../resources/videos/v1.mp4"
 
 # The name of the folder where the extracted images will be saved
-OUTPUT_DIR = "./resources/contextual_dataset" 
+OUTPUT_DIR = "./../resources/contextual_dataset"
 
-# Only save a frame every N frames (e.g., 100 means 1 frame saved for every 100 frames)
-# Adjust this value based on your video length and desired dataset size.
-FRAME_SKIP_RATE = 100 
 # ---------------------
 
-def extract_frames(video_path, output_dir, frame_skip):
+def extract_frames(video_path, output_dir):
     """
-    Reads a video file and saves frames to a directory based on a skip rate.
-    
+    Reads a video file and saves frames to a directory, capturing one frame per second.
+
     Args:
         video_path (str): Path to the source video file.
         output_dir (str): Directory where images will be saved.
-        frame_skip (int): Number of frames to skip between saves.
     """
     
     # 1. Ensure the output directory exists
@@ -37,7 +33,8 @@ def extract_frames(video_path, output_dir, frame_skip):
     # Get video properties (optional, for info)
     fps = vidcap.get(cv2.CAP_PROP_FPS)
     frame_count = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
-    print(f"Video loaded. FPS: {fps}, Total Frames: {frame_count}")
+    frame_skip = int(fps)  # Save one frame per second
+    print(f"Video loaded. FPS: {fps}, Total Frames: {frame_count}, Saving every {frame_skip} frames (1 per second)")
 
     count = 0
     saved_count = 0
@@ -70,7 +67,8 @@ def extract_frames(video_path, output_dir, frame_skip):
     vidcap.release()
     print(f"\n--- Extraction Complete ---")
     print(f"Total frames processed: {count}")
-    print(f"Total images saved to '{output_dir}': {saved_count}")
+    print(f"Total images saved : {saved_count}")
 
 # Execute the function
-extract_frames(VIDEO_PATH, OUTPUT_DIR, FRAME_SKIP_RATE)
+extract_frames(VIDEO_PATH, OUTPUT_DIR)
+
